@@ -34,6 +34,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton mPrevButton;
     private Button mTryAgainButton;
     private static final String TAG = "QuizActivity";
+    private static final String TAG_instanceSaved = "InstanceSaved";
     private static final String TAG_mCurrentIndex = "mCurrentIndex";
     private static final String KEY_INDEX = "index";
     private int mCurrentIndex = 0;
@@ -65,21 +66,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
         mQuestionTextView = findViewById(R.id.question_text_view);
         updateQuestion();
-
-        if (savedInstanceState != null) {
-            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
-            Log.d(TAG_mCurrentIndex, savedInstanceState.toString());
-        }
     }
-
-
-    @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        Log.i(TAG, "onSavedInstance");
-        savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
-    }
-
     //Слушатель для всех кнопок в текущей вьюхе
     @Override
     public void onClick(View v) {
@@ -150,6 +137,13 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             allAnswer++;
         }
         return (int)((answerTrueCount / (double)mQuestionBank.length) * 100);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        Log.d(TAG, "MainActivity: onSaveInstanceState()");
+        savedInstanceState.putInt("index",mCurrentIndex);
+        super.onSaveInstanceState(savedInstanceState);
     }
     @Override
     protected void onStart() {
